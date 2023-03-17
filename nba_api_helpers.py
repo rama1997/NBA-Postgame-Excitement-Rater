@@ -69,7 +69,7 @@ def recap_games(games: list, interested_players: list, highscore:int):
 
 		# Check game status
 		if game['gameStatus'] == 1: # Game has not started -> show time remaining til start
-			nba_api_helpers.time_til_game_start(parse(game["gameTimeUTC"]))
+			time_til_game_start(parse(game["gameTimeUTC"]))
 		elif game['gameStatus'] == 2: # Game in progress
 			print('Game is currently in progress')
 		elif game['gameStatus'] == 3: # Game has finished. Determine if game is worth watching. Return highligh url if it is worth watching
