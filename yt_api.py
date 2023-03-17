@@ -16,19 +16,20 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 api_service_name = "youtube"
 api_version = "v3"
-client_secrets_file = "path/to/secret/file"
+client_secrets_file = "path/to/client_secret_file"
 
 def get_authenticated_service():
 	"""
 	Get credentials and create an API client. Will need to authorize first time and credential will be saved for future use.
 	"""
+	credential_pickle_file = "path/to/credential_pickle_file/"
 	flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
-	if os.path.exists("yt_credentials/CREDENTIALS_PICKLE_FILE"):
-		with open("yt_credentials/CREDENTIALS_PICKLE_FILE", 'rb') as f:
+	if os.path.exists(credential_pickle_file):
+		with open(credential_pickle_file, 'rb') as f:
 			credentials = pickle.load(f)
 	else:
 		credentials = flow.run_console()
-		with open("yt_credentials/CREDENTIALS_PICKLE_FILE", 'wb') as f:
+		with open(credential_pickle_file, 'wb') as f:
 			pickle.dump(credentials, f)
 	return googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
