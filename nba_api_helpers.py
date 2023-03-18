@@ -75,9 +75,13 @@ def recap_games(games: list, interested_players: list, highscore:int):
 		elif game['gameStatus'] == 3: # Game has finished. Determine if game is worth watching. Return highligh url if it is worth watching
 			worth_watching = game_rater.rate_game(game, interested_players, highscore)
 			# if game is worth watching, return highlight url
+			url = ""
 			if worth_watching:
 				for video in youtube_highlights:
 					if game_title in video['snippet']['title']:
 						url = 'https://www.youtube.com/watch?v=' + video['snippet']['resourceId']['videoId']
 						print("Highlight Links: " + url)
+						break
+			if not url:
+				print("No highlight video found.")
 		print("\n")
