@@ -18,22 +18,42 @@ api_service_name = "youtube"
 api_version = "v3"
 client_secrets_file = "path/to/client_secret_file"
 
+def test_credientials(client) -> bool:
+	"""
+	Given Youbube API client, test to see if it can make connection can be made
+	"""
+	try:
+		request = client.channels().list(
+			part="snippet,contentDetails,statistics",
+			forUsername="NBA"
+		)
+		response = request.execute()
+		return True
+	except Exception as _:
+		print("Cilent could not be accessed. Need to reauthorize API.")
+		return False
+	
 def get_authenticated_service():
 	"""
 	Get credentials and create an API client. Will need to authorize first time and credential will be saved for future use.
 	"""
 	credential_pickle_file = "path/to/credential_pickle_file/"
 	flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
+
+	# Use old credential token if it is exists and still valid. Delete if not valid so we can create new one
 	if os.path.exists(credential_pickle_file):
 		with open(credential_pickle_file, 'rb') as f:
 			credentials = pickle.load(f)
-	else:
-		credentials = flow.run_console()
-		with open(credential_pickle_file, 'wb') as f:
-			pickle.dump(credentials, f)
-	return googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
+		yt = googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
+		if test_credientials(yt):
+			return googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
+		os.remove(credential_pickle_file)
 
-youtube = get_authenticated_service()
+	# Creates new credential token if none exist or if previous token is expired
+	credentials = flow.run_console()
+	with open(credential_pickle_file, 'wb') as f:
+		pickle.dump(credentials, f)
+	return googleapiclient.discovery.build(api_service_name, api_version, credentials=credentials)
 
 def get_channel(channel_username = "") -> str:
 	"""
@@ -87,3 +107,4 @@ def get_videos_from_playlist(channel_username: str, playlist_title: str) -> list
 	playlist_items = get_playlist_items(playlist_id)
 	return playlist_items
 
+youtube = get_authenticated_service()
