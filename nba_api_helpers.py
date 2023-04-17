@@ -83,6 +83,6 @@ def recap_games(games: list, favorite_players: list, high_score:int):
 						url = 'https://www.youtube.com/watch?v=' + video['snippet']['resourceId']['videoId']
 						print("Highlight Links: " + url)
 						break
-			if not url:
-				print("No highlight video found.")
+				if not url:
+					print("No highlight video found.")
 		print("\n")
