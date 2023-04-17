@@ -1,11 +1,9 @@
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone
 from dateutil.parser import parse
-import nba_api
-from nba_api.live.nba.endpoints import scoreboard, boxscore
+from nba_api.live.nba.endpoints import scoreboard
 from nba_api.stats.static import teams, players
-from nba_api.stats.endpoints import leaguegamefinder
-import game_rater
 from yt_api import get_videos_from_playlist
+from game_rater import rate_game
 
 def get_todays_scoreboard():
 	"""
@@ -55,7 +53,7 @@ def time_til_game_start(game_time: str):
 	elif diff == 0:
 		print("Starts in less than an hour")
 
-def recap_games(games: list, interested_players: list, highscore:int):
+def recap_games(games: list, favorite_players: list, high_score:int):
 	"""
 	Given a list of games, recap the game and determine if it is worth watching
 	"""
@@ -64,7 +62,9 @@ def recap_games(games: list, interested_players: list, highscore:int):
 	youtube_highlights = get_videos_from_playlist("NBA", "Nightly Full Game Highlights | 2022-23")
 
 	for i,game in enumerate(games):
-		game_title = "{awayTeam} at {homeTeam}".format(awayTeam=game['awayTeam']['teamName'].upper(), homeTeam=game['homeTeam']['teamName'].upper())
+		away_team = game['awayTeam']['teamName'].upper()
+		home_team = game['homeTeam']['teamName'].upper()
+		game_title = "{awayTeam} at {homeTeam}".format(awayTeam=away_team, homeTeam=home_team)
 		print("Game {game_count}: ".format(game_count= i+1) + game_title)
 
 		# Check game status
@@ -73,12 +73,13 @@ def recap_games(games: list, interested_players: list, highscore:int):
 		elif game['gameStatus'] == 2: # Game in progress
 			print('Game is currently in progress')
 		elif game['gameStatus'] == 3: # Game has finished. Determine if game is worth watching. Return highligh url if it is worth watching
-			worth_watching = game_rater.rate_game(game, interested_players, highscore)
+			worth_watching = rate_game(game, favorite_players, high_score)
 			# if game is worth watching, return highlight url
 			url = ""
 			if worth_watching:
 				for video in youtube_highlights:
-					if game_title in video['snippet']['title']:
+					video_title = video['snippet']['title']
+					if game_title in video_title or (away_team in video_title and home_team in video_title):
 						url = 'https://www.youtube.com/watch?v=' + video['snippet']['resourceId']['videoId']
 						print("Highlight Links: " + url)
 						break

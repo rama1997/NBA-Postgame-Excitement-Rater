@@ -1,8 +1,4 @@
-'''
-Functions to rate the NBA game
-'''
-
-def rate_game(game: {}, players: [], highscore:int ) -> bool:
+def rate_game(game: dict, players: list, highscore:int ) -> bool:
 	"""
 	Given a game, rate the game and determine if it is worth watching.
 	Checks if it was a close game, it game entered OT, if there was a comeback, and if a interested player was game leader
@@ -15,19 +11,19 @@ def rate_game(game: {}, players: [], highscore:int ) -> bool:
 		print('Skip game. Not worth watching. Score: {} - {}'.format(game['awayTeam']['score'], game['homeTeam']['score']))
 		return False
 
-def is_close_game(game: {}) -> bool:
+def is_close_game(game: dict) -> bool:
 	"""
 	Return true if end of game score differed by less than 10
 	"""
 	return abs(game['awayTeam']['score'] - game['homeTeam']['score']) <= 10
 
-def entered_ot(game: {}) -> bool:
+def entered_ot(game: dict) -> bool:
 	"""
 	Return true if game entered OT
 	"""
 	return game['period'] > 4
 
-def comeback(game: {}) -> bool:
+def comeback(game: dict) -> bool:
 	"""
 	Return true if there was a comeback in the 4th quarter
 	"""
@@ -35,7 +31,7 @@ def comeback(game: {}) -> bool:
 	winner = game['awayTeam']['teamId'] if game['awayTeam']['score'] > game['homeTeam']['score'] else game['homeTeam']['teamId']
 	return not(lead==winner)
 
-def interested_game_leaders(game: {}, players: []) -> bool:
+def interested_game_leaders(game: dict, players: list) -> bool:
 	"""
 	Return true if an interested player is a game leader
 	"""
@@ -44,7 +40,7 @@ def interested_game_leaders(game: {}, players: []) -> bool:
 			return True
 	return False
 
-def high_scorer(game: {}, highscore: int) -> bool:
+def high_scorer(game: dict, highscore: int) -> bool:
 	"""
 	Return true if a player scored a certain amount of points
 	"""

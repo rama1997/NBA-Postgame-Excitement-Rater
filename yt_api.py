@@ -1,12 +1,9 @@
-'''
-Functions to rate the NBA game
-'''
 import os
 import pickle
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-import json
+from config import CLIENT_SECRET_FILE
 
 scopes = ["https://www.googleapis.com/auth/youtube.readonly"]
 
@@ -16,7 +13,6 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 api_service_name = "youtube"
 api_version = "v3"
-client_secrets_file = "path/to/client_secret_file"
 
 def test_credientials(client) -> bool:
 	"""
@@ -37,8 +33,8 @@ def get_authenticated_service():
 	"""
 	Get credentials and create an API client. Will need to authorize first time and credential will be saved for future use.
 	"""
-	credential_pickle_file = "path/to/credential_pickle_file/"
-	flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(client_secrets_file, scopes)
+	credential_pickle_file = "./yt_credentials/CREDENTIALS_PICKLE_FILE"
+	flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, scopes)
 
 	# Use old credential token if it is exists and still valid. Delete if not valid so we can create new one
 	if os.path.exists(credential_pickle_file):
