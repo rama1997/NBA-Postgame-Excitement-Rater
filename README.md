@@ -3,7 +3,7 @@
 Determines how exciting daily NBA games are using live data obtained from the NBA API, and concludes whether or not the game is worth watching. For games that are determined to be worth watching, searches for the highlight video from the NBA Youtube channel using the Youtube API.
 
 ## Preview:
-<img src="https://i.imgur.com/hZdKpEu" />
+<img src="https://i.imgur.com/hZdKpEu.png" />
 
 ## Features
 - Uses the NBA API to obtain the daily game schedule as well as the game’s result and stats
