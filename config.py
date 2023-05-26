@@ -1,4 +1,4 @@
-CLIENT_SECRET_FILE = "./yt_credentials/client_secret_353971127809-4rqbph0efja6j12rt9td9e9uccmh25sn.apps.googleusercontent.com.json"
+CLIENT_SECRET_FILE = ""
 
 FAVORITE_TEAMS = ["warriors", "lakers", "suns", "nuggets", "76"]
 
