@@ -53,13 +53,6 @@ def run_model(game):
         ).tolist()
         predictions += ot_p
 
-    # Removing home court advantage
-    # home_court_advantage = 0.08524504
-    # for p in predictions:
-    #     if p[1] > home_court_advantage:
-    #         p[1] -= home_court_advantage
-    #         p[0] += home_court_advantage
-
     # Returns prediction
     return predictions
 
@@ -144,19 +137,19 @@ def get_comeback_score(game):
         play_by_play[["TIME_REMAINING", "HOME_SCORE", "AWAY_SCORE", "SCORE_MARGIN", "OT"]]
     )
 
-    # Make predictions more coherant by adding 100% win probablity at the end of the game
+    # Make predictions more coherant by adding 100% win probablity at the end of the game to winning team. Calculate lowest win probably of the winning team
+    lowest_win_prob = 1
     if game["homeTeam"]["score"] > game["awayTeam"]["score"]:
         predictions = np.append(model_results, [[0, 1]], axis=0)
+        for p in predictions:
+            lowest_win_prob = min(lowest_win_prob, p[1])
     else:
         predictions = np.append(model_results, [[1, 0]], axis=0)
+        for p in predictions:
+            lowest_win_prob = min(lowest_win_prob, p[0])   
 
-    # Return comeback score
-    home_lowest_win_prob = 1
-    away_lowest_win_prob = 1
-    for p in predictions:
-        home_lowest_win_prob = min(home_lowest_win_prob, p[1])
-        away_lowest_win_prob = min(away_lowest_win_prob, p[0])
+    # plt.plot(predictions)
+    # plt.show()
 
-    plt.plot(predictions)
-    plt.show()
-    return max(home_lowest_win_prob, away_lowest_win_prob)
+    # Returns odds of winning at lowest probability as comeback score
+    return (1 - lowest_win_prob) / lowest_win_prob

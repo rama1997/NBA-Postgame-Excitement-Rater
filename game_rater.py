@@ -18,25 +18,47 @@ def entered_ot(game: dict) -> bool:
 
 def is_comeback(game: dict) -> bool:
     """
-    Return true if there was a comeback in the 4th quarter
+    Return true if there was a comeback in the 4th quarter or if the overall comeback score is high
     """
     comeback_score = get_comeback_score(game)
-    #print(f"Comeback Score: {comeback_score} %")
-    leading_entering_fourth = (
+    print(f"Comeback Score: {comeback_score} %")
+
+    home_score_entering_fourth_q = (
+        game["homeTeam"]["score"] - game["homeTeam"]["periods"][3]["score"]
+    )
+
+    away_score_entering_fourth_q = (
+        game["awayTeam"]["score"] - game["awayTeam"]["periods"][3]["score"]
+    )
+
+    team_leading_entering_fourth_q = (
         game["awayTeam"]["teamId"]
-        if game["awayTeam"]["score"] - game["awayTeam"]["periods"][3]["score"]
-        > game["homeTeam"]["score"] - game["homeTeam"]["periods"][3]["score"]
+        if away_score_entering_fourth_q > home_score_entering_fourth_q
         else game["homeTeam"]["teamId"]
     )
+
     winner = (
         game["awayTeam"]["teamId"]
         if game["awayTeam"]["score"] > game["homeTeam"]["score"]
         else game["homeTeam"]["teamId"]
     )
-    return not (leading_entering_fourth == winner)
+
+    score_difference_entering_fourth_q = abs(
+        home_score_entering_fourth_q - away_score_entering_fourth_q
+    )
+
+    return (
+        True
+        if (
+            team_leading_entering_fourth_q != winner
+            and score_difference_entering_fourth_q > 10
+        )
+        or comeback_score >= 4
+        else False
+    )
 
 
-def interesting_game_leaders(game: dict, fav_players: list) -> bool:
+def game_leaders_is_fav_player(game: dict, fav_players: list) -> bool:
     """
     Return true if an interested player is a game leader
     """
@@ -57,13 +79,12 @@ def interesting_game_leaders(game: dict, fav_players: list) -> bool:
 def rate_game(game: dict, fav_players: list) -> bool:
     """
     Given a game, rate the game and determine if it is worth watching.
-    Checks if it was a close game, it game entered OT, if there was a comeback, and if a interested player was game leader
     """
     comeback_score = is_comeback(game)
     worth_watching = (
         is_close_game(game)
         or entered_ot(game)
-        or interesting_game_leaders(game, fav_players)
+        or game_leaders_is_fav_player(game, fav_players)
     )
     if worth_watching:
         print("Game finished and is worth watching")

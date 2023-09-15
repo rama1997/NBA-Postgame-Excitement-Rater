@@ -65,7 +65,8 @@ def recap_games(games: list, favorite_players: list):
 
     # Get tonight's highlight clips from NBA youtube channel
     youtube_highlights = get_videos_from_playlist(
-        "NBA", "Nightly Full Game Highlights | 2022-23"
+        #"NBA", "Nightly Full Game Highlights | 2022-23"
+        "NBA", "NBA Playoffs | 2022-23 Season"
     )
 
     for i, game in enumerate(games):
