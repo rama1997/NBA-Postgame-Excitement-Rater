@@ -12,7 +12,7 @@ Determines whether or not a daily NBA games is "exciting" enough to watch by usi
 - Uses the Youtube API to recieve the highlight reel of each game from the offical NBA Youtube channel
 
 ## Win Prediction Model
-Implemented a win prediction model in order to have a more accurate representation of whether or not a game was close or consisted of a comeback.
+Built and implemented a win prediction model in order to have a more accurate representation of whether or not a game was close or consisted of a comeback.
 
 Model Details:
 - Instead of building one model for the entire game, 5 seperate model were built in order to represent the first, second, third, and fourth quarter as well as overtime
