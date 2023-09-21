@@ -20,6 +20,7 @@ Model Details:
 - Models were trained on historical play by play data and results for all regular season and playoff NBA games over the last 15 years(2007-2022) obtained from the NBA API 
 - Win probability is calculate as a function of game time and the score difference
 - Model assumes a 50/50 model meaning both team are evenly matches and playing on a neutral court which removes home court advantage. Does not take into account historical team nor player performance.
+- Model had a 75% accuracy when predicting the winning team
 
 Steps used to build my models can be found in the `model` folder
 
