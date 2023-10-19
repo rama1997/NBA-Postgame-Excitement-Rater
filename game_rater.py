@@ -21,7 +21,7 @@ def is_comeback(game: dict) -> bool:
     Return true if there was a comeback in the 4th quarter or if the overall comeback score is high
     """
     comeback_score = get_comeback_score(game)
-    print(f"Comeback Score: {comeback_score} %")
+    print(f"Comeback Score: {comeback_score}")
 
     home_score_entering_fourth_q = (
         game["homeTeam"]["score"] - game["homeTeam"]["periods"][3]["score"]
