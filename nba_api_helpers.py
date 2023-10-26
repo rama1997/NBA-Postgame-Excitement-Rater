@@ -4,6 +4,7 @@ from nba_api.live.nba.endpoints import scoreboard
 from nba_api.stats.static import teams, players
 from yt_api import get_videos_from_playlist
 from game_rater import rate_game
+from config import PLAYLIST_NAME
 
 
 def get_todays_scoreboard():
@@ -65,8 +66,8 @@ def recap_games(games: list, favorite_players: list):
 
     # Get tonight's highlight clips from NBA youtube channel
     youtube_highlights = get_videos_from_playlist(
-        #"NBA", "Nightly Full Game Highlights | 2022-23"
-        "NBA", "NBA Playoffs | 2022-23 Season"
+        "NBA",
+        PLAYLIST_NAME,
     )
 
     for i, game in enumerate(games):
