@@ -6,6 +6,10 @@ import time
 import requests
 import matplotlib.pyplot as plt
 from nba_api.stats.endpoints import playbyplay
+import warnings
+
+# Remove FutureWarning of deprecated sklearn version
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 def run_model(game):
