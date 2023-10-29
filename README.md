@@ -27,11 +27,12 @@ Steps used to build my models can be found in the `model` folder
 ## Usage
 Configure `config.py` with the desired data
 
-- Requires credential for Youtube API
+- Requires Oauth2 Desktop App credential for Youtube API.
 - Include favorite teams/players to search for
 - Set minimum point count to be considered as a high scorer
 
 Example included in `config.py`
 
 ## Todo:
+- Retrain model to include possession of ball when calculating win probability
 - Improve how a close game is determined. How close the game stayed at the 50/50 probability
