@@ -81,8 +81,8 @@ def rate_game(game: dict, fav_players: list) -> bool:
     Given a game, rate the game and determine if it is worth watching.
     """
     worth_watching = (
-        is_close_game(game)
-        or is_comeback(game)
+        is_comeback(game)
+        or is_close_game(game)
         or entered_ot(game)
         or game_leaders_is_fav_player(game, fav_players)
     )

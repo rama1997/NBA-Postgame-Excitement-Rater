@@ -51,12 +51,18 @@ def time_til_game_start(game_time: str):
     Given a game starting time, calculate hours left til game start
     """
     game_time_localized = game_time.replace(tzinfo=timezone.utc).astimezone(tz=None)
-    current_time = datetime.now()
-    diff = game_time_localized.hour - current_time.hour
-    if diff > 0:
-        print("{} hours til game starts.".format(diff))
-    elif diff == 0:
-        print("Starts in less than an hour")
+    current_time = datetime.now(timezone.utc)
+    time_difference = game_time_localized - current_time
+    hour_difference = round(time_difference.total_seconds() / 3600)
+    minute_difference = round(time_difference.total_seconds() / 60)
+    if hour_difference > 0:
+        print(
+            f"Starts in {hour_difference} hours at {game_time_localized.strftime('%I:%M %p')}"
+        )
+    else:
+        print(
+            f"Starts in {minute_difference} minutes at {game_time_localized.strftime('%I:%M %p')}"
+        )
 
 
 def recap_games(games: list, favorite_players: list):
