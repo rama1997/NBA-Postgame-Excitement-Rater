@@ -55,7 +55,6 @@ def get_time_til_game_start(game: str):
     time_difference = game_time_localized - current_time
     hour_difference = time_difference.days * 24 + time_difference.seconds // 3600
     minute_difference = (time_difference.seconds // 60) % 60
-    print(time_difference)
     if hour_difference > 0:
         print(
             f"Starts in {hour_difference} hours {minute_difference} minutes at {game_time_localized.strftime('%I:%M %p')}"
