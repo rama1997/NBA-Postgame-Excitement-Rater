@@ -1,5 +1,6 @@
 from win_prediction_model import get_comeback_score
-import config
+from config import FAVORITE_PLAYERS, HIGH_SCORER
+import nba_api_helpers
 
 
 def is_close_game(game: dict) -> bool:
@@ -21,7 +22,6 @@ def is_comeback(game: dict) -> bool:
     Return true if there was a comeback in the 4th quarter or if the overall comeback score is high
     """
     comeback_score = get_comeback_score(game)
-    print(f"Comeback Score: {comeback_score}")
 
     home_score_entering_fourth_q = (
         game["homeTeam"]["score"] - game["homeTeam"]["periods"][3]["score"]
@@ -58,25 +58,34 @@ def is_comeback(game: dict) -> bool:
     )
 
 
-def game_leaders_is_fav_player(game: dict, fav_players: list) -> bool:
+def game_leaders_is_fav_player(game: dict) -> bool:
     """
-    Return true if an interested player is a game leader
+    Return true if a favorite player is a game leader
     """
-    for player in fav_players:
+    favorite_players_ids = nba_api_helpers.get_player_ids(FAVORITE_PLAYERS)
+
+    for player in favorite_players_ids:
         if (
             player == game["gameLeaders"]["awayLeaders"]["personId"]
             or player == game["gameLeaders"]["homeLeaders"]["personId"]
         ):
             return True
+    return False
+
+
+def game_has_high_scorer(game: dict) -> bool:
+    """
+    Return true if the game has a player that scored a lot of points
+    """
     if (
-        game["gameLeaders"]["awayLeaders"]["points"] >= config.HIGH_SCORER
-        or game["gameLeaders"]["homeLeaders"]["points"] >= config.HIGH_SCORER
+        game["gameLeaders"]["awayLeaders"]["points"] >= HIGH_SCORER
+        or game["gameLeaders"]["homeLeaders"]["points"] >= HIGH_SCORER
     ):
         return True
     return False
 
 
-def rate_game(game: dict, fav_players: list) -> bool:
+def rate_game(game: dict) -> bool:
     """
     Given a game, rate the game and determine if it is worth watching.
     """
@@ -84,15 +93,61 @@ def rate_game(game: dict, fav_players: list) -> bool:
         is_comeback(game)
         or is_close_game(game)
         or entered_ot(game)
-        or game_leaders_is_fav_player(game, fav_players)
+        or game_leaders_is_fav_player(game)
+        or game_has_high_scorer(game)
     )
-    if worth_watching:
-        print("Game finished and is worth watching")
-        return True
-    else:
-        print(
-            "Skip game. Not worth watching. Score: {} - {}".format(
-                game["awayTeam"]["score"], game["homeTeam"]["score"]
-            )
+    return worth_watching
+
+
+def get_games_recap(games: list):
+    """
+    Given a list of games, recap the game and determine if it is worth watching
+    """
+
+    # Get tonight's highlight clips from NBA youtube channel
+    youtube_highlights = nba_api_helpers.get_recent_NBA_videos()
+
+    for i, game in enumerate(games):
+        away_team = game["awayTeam"]["teamName"].upper()
+        home_team = game["homeTeam"]["teamName"].upper()
+        game_title = "{awayTeam} at {homeTeam}".format(
+            awayTeam=away_team, homeTeam=home_team
         )
-        return False
+        print("Game {game_count}: ".format(game_count=i + 1) + game_title)
+
+        # Check game status
+        game_status = game["gameStatus"]
+        if game_status == 1:  # Game has not started
+            nba_api_helpers.get_time_til_game_start(game)
+        elif game_status == 2:  # Game in progress
+            print("Game is currently in progress")
+        elif (
+            game_status == 3
+        ):  # Game has finished. Determine if game is worth watching. Return highligh url if it is worth watching
+            worth_watching = rate_game(game)
+            # if game is worth watching, return highlight url
+            url = ""
+            if worth_watching:
+                print("Game finished and is worth watching")
+                for video in youtube_highlights:
+                    video_title = video["snippet"]["title"]
+                    if game_title in video_title or (
+                        away_team in video_title and home_team in video_title
+                    ):
+                        url = (
+                            "https://www.youtube.com/watch?v="
+                            + video["snippet"]["resourceId"]["videoId"]
+                        )
+                        print("Highlight Links: " + url)
+                        break
+                if not url:
+                    print(
+                        "No highlight video found. Link to NBA Youtube Channel: https://www.youtube.com/@NBA/videos"
+                    )
+            else:
+                print(
+                    "Skip game. Not worth watching. Score: {} - {}".format(
+                        game["awayTeam"]["score"], game["homeTeam"]["score"]
+                    )
+                )
+        print("\n")
