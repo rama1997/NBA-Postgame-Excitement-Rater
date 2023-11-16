@@ -38,7 +38,7 @@ git clone https://github.com/rama1997/NBA-Postgame-Excitement-Rater.git
 cd NBA-Postgame-Excitement-Rater
 ```
 
-Clone this repo and install packages listed in requirements.txt
+Clone this repo and install packages listed in `requirements.txt`
 
 ```
 pip install -r requirements.txt
