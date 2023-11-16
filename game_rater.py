@@ -1,6 +1,7 @@
 from win_prediction_model import get_comeback_score
 from config import FAVORITE_PLAYERS, HIGH_SCORER
-import nba_api_helpers
+import nba_api_helpers as nba
+from yt_api import get_recent_NBA_videos
 
 
 def is_close_game(game: dict) -> bool:
@@ -62,7 +63,7 @@ def game_leaders_is_fav_player(game: dict) -> bool:
     """
     Return true if a favorite player is a game leader
     """
-    favorite_players_ids = nba_api_helpers.get_player_ids(FAVORITE_PLAYERS)
+    favorite_players_ids = nba.get_player_ids(FAVORITE_PLAYERS)
 
     for player in favorite_players_ids:
         if (
@@ -105,7 +106,7 @@ def get_games_recap(games: list):
     """
 
     # Get tonight's highlight clips from NBA youtube channel
-    youtube_highlights = nba_api_helpers.get_recent_NBA_videos()
+    youtube_highlights = get_recent_NBA_videos()
 
     for i, game in enumerate(games):
         away_team = game["awayTeam"]["teamName"].upper()
@@ -118,7 +119,19 @@ def get_games_recap(games: list):
         # Check game status
         game_status = game["gameStatus"]
         if game_status == 1:  # Game has not started
-            nba_api_helpers.get_time_til_game_start(game)
+            (
+                game_time,
+                hour_left_til_game_start,
+                minute_left_til_game_start,
+            ) = nba.get_time_til_game_start(game)
+            if hour_left_til_game_start > 0:
+                print(
+                    f"Starts in {hour_left_til_game_start} hours {minute_left_til_game_start} minutes at {game_time.strftime('%I:%M %p')}"
+                )
+            else:
+                print(
+                    f"Starts in {minute_left_til_game_start} minutes at {game_time.strftime('%I:%M %p')}"
+                )
         elif game_status == 2:  # Game in progress
             print("Game is currently in progress")
         elif (

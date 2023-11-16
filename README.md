@@ -1,6 +1,8 @@
 # NBA-Game-Recap
 
-Determines whether or not a daily NBA games is "exciting" enough to watch by using live data obtained from the NBA API. For games that are determined to be worth watching, we will search for the highlight video from the offical NBA Youtube channel using the Youtube API.
+Determines whether or not a daily NBA games is "exciting" enough to watch by using live data obtained from the NBA API.
+
+For games that are determined to be worth watching, we will search for the highlight video from the offical NBA Youtube channel using the Youtube API.
 
 ## Preview:
 <img src="https://i.imgur.com/hZdKpEu.png" width="450" height="300" />
@@ -24,14 +26,39 @@ Model Details:
 
 Steps used to build my models can be found in the `model` folder
 
-## Usage
+# Installation and Set up
+## Prerequisites
+- Python
+- Pip 
+- Set up Google Cloud App wth Oauth2 Desktop App credential for Youtube API 
+
+First, download from Github onto your computer
+```
+git clone https://github.com/rama1997/NBA-Postgame-Excitement-Rater.git
+cd NBA-Postgame-Excitement-Rater
+```
+
+Clone this repo and install packages listed in requirements.txt
+
+```
+pip install -r requirements.txt
+```
+
+You may want to install the requirements in a Python virtual environment to ensure they don't conflict with other Python projects on your system.
+
+## Configuration
 Configure `config.py` with the desired data
 
-- Requires Oauth2 Desktop App credential for Youtube API.
 - Include favorite teams/players to search for
 - Set minimum point count to be considered as a high scorer
 
 Example included in `config.py`
+
+## Usage
+Run 
+```
+python3 main.py
+```
 
 ## Todo:
 - Retrain model to include possession of ball when calculating win probability

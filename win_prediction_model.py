@@ -1,10 +1,9 @@
 import pickle
-import pandas as pd
 import datetime
-import numpy as np
 import time
 import requests
-import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 from nba_api.stats.endpoints import playbyplay
 import warnings
 
@@ -161,9 +160,6 @@ def get_comeback_score(game):
         predictions = np.append(model_results, [[1, 0]], axis=0)
         for p in predictions:
             lowest_win_prob = min(lowest_win_prob, p[0])
-
-    # plt.plot(predictions)
-    # plt.show()
 
     # Returns odds of winning at lowest probability as comeback score
     return (1 - lowest_win_prob) / lowest_win_prob

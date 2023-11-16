@@ -1,13 +1,13 @@
-import nba_api_helpers
+import nba_api_helpers as nba
 from game_rater import get_games_recap
-from config import FAVORITE_TEAMS, FAVORITE_PLAYERS
+from config import FAVORITE_TEAMS
 
 if __name__ == "__main__":
     # Get interested teams
-    favorite_teams_ids = nba_api_helpers.get_team_ids(FAVORITE_TEAMS)
+    favorite_teams_ids = nba.get_team_ids(FAVORITE_TEAMS)
 
     # Get interested games from all games being played today
-    all_games, board = nba_api_helpers.get_todays_scoreboard()
+    all_games, board = nba.get_todays_scoreboard()
     interested_games = [
         game
         for game in all_games

@@ -2,8 +2,6 @@ from datetime import datetime, timezone
 from dateutil.parser import parse
 from nba_api.live.nba.endpoints import scoreboard
 from nba_api.stats.static import teams, players
-from yt_api import get_recent_NBA_videos
-from game_rater import rate_game
 
 
 def get_todays_scoreboard():
@@ -15,7 +13,7 @@ def get_todays_scoreboard():
     return games, board
 
 
-def get_team_ids(teams_to_find: list[str]) -> list[str]:
+def get_team_ids(teams_to_find: list[str]) -> list[int]:
     """
     Given a list of team names, return a list of the team's id
     """
@@ -27,6 +25,7 @@ def get_team_ids(teams_to_find: list[str]) -> list[str]:
             ids.append(team_id)
         except Exception as _:
             print('Team "{}" not found'.format(team))
+
     return ids
 
 
@@ -55,11 +54,4 @@ def get_time_til_game_start(game: str):
     time_difference = game_time_localized - current_time
     hour_difference = time_difference.days * 24 + time_difference.seconds // 3600
     minute_difference = (time_difference.seconds // 60) % 60
-    if hour_difference > 0:
-        print(
-            f"Starts in {hour_difference} hours {minute_difference} minutes at {game_time_localized.strftime('%I:%M %p')}"
-        )
-    else:
-        print(
-            f"Starts in {minute_difference} minutes at {game_time_localized.strftime('%I:%M %p')}"
-        )
+    return game_time_localized, hour_difference, minute_difference
