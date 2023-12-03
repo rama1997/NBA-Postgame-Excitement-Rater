@@ -71,8 +71,10 @@ def print_output(games: list):
             print("Game is currently in progress")
         elif game_status == 3:  # Game has finished
             worth_watching = rate_game(game)
-            if worth_watching:  # If game is worth watching, return highlight url
-                print("Game finished and is worth watching")
+            if worth_watching:
+                print(
+                    "Game finished and is worth watching. Here is the highlight video:"
+                )
                 get_highlight_video_url(home_team, away_team)
             else:
                 print(
