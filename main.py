@@ -1,24 +1,14 @@
 import nba_api_helpers as nba
-from game_rater import get_games_recap
-from config import FAVORITE_TEAMS
+from output_helper import print_output
+
 
 if __name__ == "__main__":
-    # Get interested teams
-    favorite_teams_ids = nba.get_team_ids(FAVORITE_TEAMS)
-
-    # Get interested games from all games being played today
-    all_games, board = nba.get_todays_scoreboard()
-    interested_games = [
-        game
-        for game in all_games
-        if game["awayTeam"]["teamId"] in favorite_teams_ids
-        or game["homeTeam"]["teamId"] in favorite_teams_ids
-    ]
+    all_games_today = nba.get_all_games_playing_today()
+    interesting_games = nba.get_interesting_game()
 
     # Get recaps of today's game
-    print("Date: " + board.score_board_date + "\n")
-    if interested_games != []:
-        get_games_recap(interested_games)
+    if interesting_games != []:
+        print_output(interesting_games)
     else:
         print("No personally interesting games today. Showing all games from today:\n")
-        get_games_recap(all_games)
+        print_output(all_games_today)

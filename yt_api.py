@@ -61,7 +61,7 @@ def get_authenticated_service():
     )
 
 
-def get_channel(channel_username="") -> str:
+def get_channel_id(channel_username="") -> str:
     """
     Return channel id
     """
@@ -72,7 +72,7 @@ def get_channel(channel_username="") -> str:
     return response["items"][0]["id"]
 
 
-def get_playlist(channel_id: str, playlist_title: str) -> str:
+def get_playlist_id(channel_id: str, playlist_title: str) -> str:
     """
     Search for a specific playlist within a channel and return that playlist
     """
@@ -106,8 +106,8 @@ def get_videos_from_playlist(channel_username: str, playlist_title: str) -> list
     """
     Return videos from a playlist of a channel
     """
-    channel_id = get_channel(channel_username)
-    playlist_id = get_playlist(channel_id, playlist_title)
+    channel_id = get_channel_id(channel_username)
+    playlist_id = get_playlist_id(channel_id, playlist_title)
     playlist_items = get_playlist_items(playlist_id)
     return playlist_items
 
@@ -116,7 +116,7 @@ def get_recent_NBA_videos() -> list:
     """
     Return recent videos a channel
     """
-    channel_id = get_channel("NBA")
+    channel_id = get_channel_id("NBA")
     uploads_playlist_id = channel_id[:1] + "U" + channel_id[2:]
     playlist_items = get_playlist_items(uploads_playlist_id)
     return playlist_items
