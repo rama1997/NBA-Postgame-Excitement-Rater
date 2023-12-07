@@ -95,7 +95,7 @@ def get_playlist_items(playlist_id: str) -> list:
     Return items in a given playlist
     """
     request = youtube.playlistItems().list(
-        part="snippet,contentDetails", maxResults=20, playlistId=playlist_id
+        part="snippet,contentDetails", maxResults=30, playlistId=playlist_id
     )
 
     response = request.execute()

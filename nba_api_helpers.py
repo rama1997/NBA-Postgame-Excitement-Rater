@@ -2,8 +2,6 @@ from nba_api.live.nba.endpoints import scoreboard
 from nba_api.stats.static import teams, players
 from config import FAVORITE_TEAMS
 
-todays_scoreboard = scoreboard.ScoreBoard()
-
 
 def get_team_ids(teams_to_find: list[str]) -> list[int]:
     """
@@ -36,10 +34,16 @@ def get_player_ids(players_to_find: list[str]) -> list[str]:
     return ids
 
 
+def get_todays_scoreboard():
+    todays_scoreboard = scoreboard.ScoreBoard()
+    return todays_scoreboard
+
+
 def get_all_games_playing_today():
     """
     Return list of NBA games being played today
     """
+    todays_scoreboard = get_todays_scoreboard()
     todays_games = todays_scoreboard.games.get_dict()
     return todays_games
 

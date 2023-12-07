@@ -1,17 +1,28 @@
 import nba_api_helpers as nba
-from output_helper import print_output
+import output_helper
+from menu_app.app import NBAMenuApp
+import argparse
+
+# Create an argument parser
+ap = argparse.ArgumentParser()
+
+# Add optional argument to run as menu app
+ap.add_argument(
+    "--menu",
+    action="store_true",
+    help="Option to user as a menu app",
+)
 
 
 def main():
-    all_games_today = nba.get_all_games_playing_today()
-    interesting_games = nba.get_interesting_game()
-
-    if interesting_games != []:
-        print_output(interesting_games)
-    else:
-        print("No personally interesting games today. Showing all games from today:\n")
-        print_output(all_games_today)
+    output_helper.print_output()
 
 
 if __name__ == "__main__":
-    main()
+    args = ap.parse_args()
+    if args.menu:
+        app = NBAMenuApp()
+        app.run()
+
+    else:
+        main()
