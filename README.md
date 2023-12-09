@@ -8,7 +8,7 @@ Aims to give a spoiler free decision on whether or not you should watch the game
 
 ## Preview:
 <img src="https://i.imgur.com/hZdKpEu.png" width="450" height="300" />
-<img src="https://imgur.com/a/87PVoRe" width="680" height="206" />
+<img src="https://i.imgur.com/32kdesI.png" width="680" height="206" />
 
 
 ## Features
