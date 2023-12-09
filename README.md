@@ -1,17 +1,23 @@
 # NBA-Game-Recap
 
-Determines whether or not a daily NBA games is "exciting" enough to watch by using live data obtained from the NBA API.
+Determines whether or not a daily NBA games is "exciting" enough to watch by using game data obtained from the NBA API.
 
-For games that are determined to be worth watching, we will search for the highlight video from the offical NBA Youtube channel using the Youtube API.
+For games that are determined to be worth watching, search for the highlight video from the offical NBA Youtube channel using the Youtube API.
+
+Aims to give a spoiler free decision on whether or not you should watch the game highlights for those that don't have time to watch the full NBA game
 
 ## Preview:
 <img src="https://i.imgur.com/hZdKpEu.png" width="450" height="300" />
+<img src="https://imgur.com/a/87PVoRe" width="680" height="206" />
+
 
 ## Features
 - Uses the NBA API to obtain the daily game schedule as well as the game’s result and stats
 - Evaluates the play by play and post game stats in order to determines whether a game is exciting enough to watch or not
 - Allows user to pick specific teams/players that they want to track rather than every daily game
-- Uses the Youtube API to recieve the highlight reel of each game from the offical NBA Youtube channel
+- Recieve the highlight reel of each game from the offical NBA Youtube channel using the Youtube API
+- Option of running as a menu bar app in MacOS built from `rumps`. Note: Still a work in progress
+
 
 ## Win Prediction Model
 Built and implemented a win prediction model in order to have a more accurate representation of whether or not a game was close or consisted of a comeback.
@@ -59,6 +65,12 @@ Run
 ```
 python3 main.py
 ```
+
+Using the experimental menu bar 
+```
+python3 main.py --menu
+```
+Clicking on a finished game from the menu bar will open up the highlight video in your browser.
 
 ## Todo:
 - Retrain model to include possession of ball when calculating win probability
