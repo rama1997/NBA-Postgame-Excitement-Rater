@@ -37,11 +37,9 @@ def get_time_til_game_start(game: str) -> str:
     minute_difference = (time_difference.seconds // 60) % 60
 
     if hour_difference > 0:
-        return f"Starts in {hour_difference} hours {minute_difference} minutes at {game_time.strftime('%I:%M %p')}"
+        return f"Starts at {game_time_localized.strftime('%I:%M %p')}"
     else:
-        return (
-            f"Starts in {minute_difference} minutes at {game_time.strftime('%I:%M %p')}"
-        )
+        return f"Starts at {game_time_localized.strftime('%I:%M %p')}"
 
 
 def get_games_to_rate():
